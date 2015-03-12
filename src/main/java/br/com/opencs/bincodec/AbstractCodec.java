@@ -1,6 +1,7 @@
 package br.com.opencs.bincodec;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public abstract class AbstractCodec implements Codec {
 
@@ -14,10 +15,18 @@ public abstract class AbstractCodec implements Codec {
 	
 	public byte[] decode(CharSequence src, int srcOffs, int srcSize) {
 		byte ret[];
+		int decSize;
 		
+		// Allocate the output array based on the size of getDecodedSize()
 		ret = new byte[getDecodedSize(srcSize)];
-		decode(src, srcOffs, srcSize, ret, 0);		
-		return ret;
+		decSize = decode(src, srcOffs, srcSize, ret, 0);
+
+		// Truncate ret if required
+		if (decSize == ret.length) {
+			return ret;
+		} else {
+			return Arrays.copyOf(ret, decSize);
+		}
 	}
 
 	public abstract int decode(CharSequence src, int srcOffs, int srcSize, byte[] dst,
@@ -38,6 +47,6 @@ public abstract class AbstractCodec implements Codec {
 		}
 	}
 
-	public abstract void encode(byte[] src, int srcOffs, int srcSize, Appendable dst)
+	public abstract int encode(byte[] src, int srcOffs, int srcSize, Appendable dst)
 			throws IOException;
 }
