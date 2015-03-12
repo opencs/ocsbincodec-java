@@ -22,8 +22,32 @@ public class Base2NCodec extends AbstractCodec {
 		return (((decSize * 8) + size - 1) / size);
 	}
 
-	public void decode(CharSequence src, int srcOffs, int srcSize, byte dst[], int dstOffs) {
+	public int decode(CharSequence src, int srcOffs, int srcSize, byte dst[], int dstOffs) {
+		int bitBuffer;
+		int bitBufferSize;
+		int srcEndOffs;
+		int oldDstOffs;
+		int v;
 		
+		bitBuffer = 0;
+		bitBufferSize = 0;
+		oldDstOffs = dstOffs;
+		srcEndOffs = srcOffs + srcSize;
+		while (srcOffs < srcEndOffs) {
+			// Get a character from source
+			v = src.charAt(srcOffs);
+			bitBuffer = (bitBuffer << size) | (alphabet.getValue(v));
+			srcOffs++;
+			bitBufferSize += size;
+			
+			// Add bytes to dst
+			while (bitBufferSize >= 8) {
+				bitBufferSize -= 8;
+				dst[dstOffs] = (byte)((bitBuffer >> bitBufferSize) & 0xFF);
+				dstOffs++;
+			}			
+		}
+		return  dstOffs - oldDstOffs;
 	}
 	
 	public void encode(byte src[], int srcOffs, int srcSize, Appendable dst) throws IOException {

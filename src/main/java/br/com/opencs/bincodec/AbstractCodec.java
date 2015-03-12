@@ -20,7 +20,7 @@ public abstract class AbstractCodec implements Codec {
 		return ret;
 	}
 
-	public abstract void decode(CharSequence src, int srcOffs, int srcSize, byte[] dst,
+	public abstract int decode(CharSequence src, int srcOffs, int srcSize, byte[] dst,
 			int dstOffs);
 	
 	public String encode(byte src[]) {
