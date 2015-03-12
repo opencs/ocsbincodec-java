@@ -3,17 +3,24 @@ package br.com.opencs.bincodec;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * This class implements an abstract Codec. It provides generic implementations of the helper
+ * methods but delegates the actual decoding to subclasses.
+ * 
+ * @author Fabio Jun Takada Chino (fchino at opencs.com.br)
+ * @since 2015.03.11
+ */
 public abstract class AbstractCodec implements Codec {
 
 	public abstract int getDecodedSize(int encSize);
 
 	public abstract int getEncodedSize(int decSize);
 
-	public byte[] decode(CharSequence src) {
+	public byte[] decode(CharSequence src) throws IllegalArgumentException {
 		return decode(src, 0, src.length());
 	}
 	
-	public byte[] decode(CharSequence src, int srcOffs, int srcSize) {
+	public byte[] decode(CharSequence src, int srcOffs, int srcSize) throws IllegalArgumentException {
 		byte ret[];
 		int decSize;
 		
