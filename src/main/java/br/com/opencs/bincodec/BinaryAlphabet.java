@@ -53,7 +53,7 @@ public class BinaryAlphabet implements Alphabet {
 
 	@Override
 	public int size() {
-		return 1;
+		return 2;
 	}
 
 	@Override

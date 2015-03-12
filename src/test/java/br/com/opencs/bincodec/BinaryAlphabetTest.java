@@ -24,7 +24,7 @@ public class BinaryAlphabetTest {
 	
 	protected void testBinaryAlphabetCore(BinaryAlphabet a, int zero, int one) {
 
-		assertEquals(1, a.size());
+		assertEquals(2, a.size());
 		assertEquals(zero, a.getZero());
 		assertEquals(one, a.getOne());
 		

@@ -13,8 +13,8 @@ package br.com.opencs.bincodec;
 public interface Alphabet {
 
 	/**
-	 * Size of each character in bits.
-	 * @return The size of the character in bits.
+	 * Size of the alphabet.
+	 * @return The size of the alphabet.
 	 */
 	public int size();
 	

@@ -15,18 +15,12 @@ public class StringAlphabet implements Alphabet {
 	protected final char[] map;
 	
 	/**
-	 * The required number of bits.
-	 */
-	protected final int size;
-	
-	/**
 	 * Creates a new instance of this class.
 	 * 
 	 * @param map The set of characters to be used.
 	 */
 	public StringAlphabet(String map) {
 		this.map = map.toCharArray();
-		this.size = this.computeSize(this.map.length);
 	}
 	
 	/**
@@ -36,42 +30,10 @@ public class StringAlphabet implements Alphabet {
 	 */
 	public StringAlphabet(char map[]) {
 		this.map = map.clone();
-		this.size = this.computeSize(map.length);
 	}	
-
-	/**
-	 * Sets the size based on the size of the map.
-	 * 
-	 * @param mapSize The size of the map.
-	 */
-	private int computeSize(int mapSize) {
-		int size;
-		int tmpMapSize;
-		
-		// Check the limits
-		if (mapSize < 2) {
-			throw new IllegalArgumentException("The map must have at least 2 characters.");
-		}
-		if (mapSize > 128) {
-			throw new IllegalArgumentException("The map must have at most 128 characters.");
-		}
-		
-		// Find the actual size
-		size = 0;
-		do {
-			size++;
-			tmpMapSize = 1 << size;
-		} while ((size < 8) && (tmpMapSize < mapSize));
-		
-		if (tmpMapSize != mapSize) {
-			throw new IllegalArgumentException("The map must be a power of 2.");
-		} else {
-			return size;
-		}
-	}
-
+	
 	public int size() {
-		return this.size;
+		return map.length;
 	}
 
 	public int getCharacter(int v) {
