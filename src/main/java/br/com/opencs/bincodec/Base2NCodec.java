@@ -3,7 +3,11 @@ package br.com.opencs.bincodec;
 import java.io.IOException;
 
 /**
- *
+ * This class implements a generic base 2^n codec.
+ * 
+ * <h3>Alphabet</h3>
+ * 
+ * <p></p>
  *
  * <h3>Ignored characters</h3>
  * 
