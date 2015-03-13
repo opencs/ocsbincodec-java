@@ -32,10 +32,6 @@ package br.com.opencs.bincodec;
 import static org.junit.Assert.*;
 
 public abstract class BaseAlphabetTest {
-
-	protected void testSizeCore(Alphabet a, String characters) {
-		assertEquals(characters.length(), a.size());
-	}	
 	
 	protected void testGetCharacterCore(Alphabet a, String characters) {
 		

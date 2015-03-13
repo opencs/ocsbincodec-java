@@ -41,7 +41,6 @@ public class HexadecimalAlphabetTest extends BaseAlphabetTest {
 	private static final String CHARACTERS_LC = "0123456789abcdef";
 	private static final char CHARACTERS_ARRAY_LC[] = CHARACTERS_LC.toCharArray();
 	
-
 	@Test
 	public void testHexadecimalAlphabet() {
 		HexadecimalAlphabet a;
@@ -60,14 +59,19 @@ public class HexadecimalAlphabetTest extends BaseAlphabetTest {
 		a = new HexadecimalAlphabet(true);
 		assertArrayEquals(CHARACTERS_ARRAY_LC, a.alphabet);		
 	}	
-
 	
 	@Test
 	public void testSize(){
 		HexadecimalAlphabet a;
 		
 		a = new HexadecimalAlphabet();
-		testSizeCore(a, CHARACTERS);
+		assertEquals(CHARACTERS.length(), a.size());
+
+		a = new HexadecimalAlphabet(false);
+		assertEquals(CHARACTERS.length(), a.size());
+
+		a = new HexadecimalAlphabet(true);
+		assertEquals(CHARACTERS_LC.length(), a.size());
 	}
 	
 	@Test

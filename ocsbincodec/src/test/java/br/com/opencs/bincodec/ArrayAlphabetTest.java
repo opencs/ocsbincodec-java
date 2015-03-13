@@ -58,9 +58,9 @@ public class ArrayAlphabetTest extends BaseAlphabetTest {
 		ArrayAlphabet a;
 		
 		a = new ArrayAlphabet(CHARACTERS_ARRAY);
-		testSizeCore(a, CHARACTERS);
+		assertEquals(CHARACTERS.length(), a.size());
 		a = new ArrayAlphabet(CHARACTERS);
-		testSizeCore(a, CHARACTERS);
+		assertEquals(CHARACTERS.length(), a.size());
 	}
 	
 	@Test

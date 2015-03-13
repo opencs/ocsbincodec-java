@@ -37,7 +37,7 @@ package br.com.opencs.bincodec;
  */
 public class Base32Alphabet extends ArrayAlphabet {
 	
-	private static final String ALPHABET = " ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+	private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
 	/**
 	 * Creates a new instance of this class. The method 
