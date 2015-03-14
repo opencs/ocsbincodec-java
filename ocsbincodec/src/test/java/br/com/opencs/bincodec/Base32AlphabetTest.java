@@ -29,53 +29,76 @@
  */
 package br.com.opencs.bincodec;
 
-/**
- * The alphabet of Base 32 as defined by the RFC4648.
- * 
- * @author Fabio Jun Takada Chino
- * @since 2015.03.13
- */
-public class Base32Alphabet extends ArrayAlphabet {
-	
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class Base32AlphabetTest extends BaseAlphabetTest {
+
 	private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+	private static final String ALPHABET_LC = ALPHABET.toLowerCase();
 
-	/**
-	 * Creates a new instance of this class. The method 
-	 * getCharacter() will always return upper case characters.
-	 */
-	public Base32Alphabet() {
-		this(false);
+	@Test
+	public void testBase32Alphabet() {
+		Base32Alphabet a;
+		
+		a = new Base32Alphabet();
+		assertArrayEquals(ALPHABET.toCharArray(), a.alphabet);
 	}
 
-	/**
-	 * Creates a new instance of this class.
-	 * 
-	 * @param lowerCase Determines the behavior of getCharacter(). If true, it will
-	 * return lower case characters otherwise it will return upper case characters.
-	 */
-	public Base32Alphabet(boolean lowerCase) {
-		super(lowerCase?ALPHABET.toLowerCase():ALPHABET);
+	@Test
+	public void testBase32AlphabetBoolean() {
+		Base32Alphabet a;
+		
+		a = new Base32Alphabet();
+		assertArrayEquals(ALPHABET.toCharArray(), a.alphabet);
+		
+		a = new Base32Alphabet(false);
+		assertArrayEquals(ALPHABET.toCharArray(), a.alphabet);
+		
+		a = new Base32Alphabet(true);
+		assertArrayEquals(ALPHABET_LC.toCharArray(), a.alphabet);
 	}
+	
+	@Test
+	public void testSize(){
+		Base32Alphabet a;
+		
+		a = new Base32Alphabet();
+		assertEquals(ALPHABET.length(), a.size());
+		
+		a = new Base32Alphabet(false);
+		assertEquals(ALPHABET.length(), a.size());
 
-	/**
-	 * Returns the value of a given character. This method is case
-	 * insensitive.
-	 * 
-	 * @param c The character.
-	 * @return The value of the character. 
-	 * @throws IllegalArgumentException If c is not in the alphabet. 
-	 */
-	@Override
-	public int getValue(int c) throws IllegalArgumentException {
+		a = new Base32Alphabet(true);
+		assertEquals(ALPHABET_LC.length(), a.size());
+	}
+	
+	@Test
+	public void testGetCharacter(){
+		Base32Alphabet a;
+		
+		a = new Base32Alphabet();
+		testGetCharacterCore(a, ALPHABET);
 
-		if ((c >= 'a') && (c <= 'z')) {
-			return c - 'a';
-		} else if ((c >= 'A') && (c <= 'Z')) {
-			return c - 'A';
-		} else if ((c >= '2') && (c <= '7')) {
-				return c - '2' + 26;
-		} else {
-			throw new IllegalArgumentException("Invalid Base 32 character.");
-		}
-	}	
+		a = new Base32Alphabet(false);
+		testGetCharacterCore(a, ALPHABET);
+		
+		a = new Base32Alphabet(true);
+		testGetCharacterCore(a, ALPHABET_LC);
+	}
+	
+	@Test
+	public void testGetValue() {
+		Base32Alphabet a;
+		
+		a = new Base32Alphabet();
+		testGetValueCoreCaseInsensitive(a, ALPHABET);
+
+		a = new Base32Alphabet(false);
+		testGetValueCoreCaseInsensitive(a, ALPHABET);
+
+		a = new Base32Alphabet(true);
+		testGetValueCoreCaseInsensitive(a, ALPHABET);
+	}
 }
