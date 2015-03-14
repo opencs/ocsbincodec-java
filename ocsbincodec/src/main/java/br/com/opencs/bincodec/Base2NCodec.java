@@ -209,11 +209,6 @@ public class Base2NCodec extends AbstractCodec {
 	}
 
 	public int decode(CharSequence src, int srcOffs, int srcSize, byte dst[], int dstOffs) {
-		
-		return this.decodeCore(src, srcOffs, srcSize, dst, dstOffs);
-	}
-
-	protected int decodeCore(CharSequence src, int srcOffs, int srcSize, byte dst[], int dstOffs) {
 		int bitBuffer;
 		int bitBufferSize;
 		int srcEndOffs;

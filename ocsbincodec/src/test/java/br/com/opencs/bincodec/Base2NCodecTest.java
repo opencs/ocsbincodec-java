@@ -1,0 +1,225 @@
+/*
+ * Copyright (c) 2015, Open Communications Security
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * 
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * 
+ * * Neither the name of ocsbincodec-java nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package br.com.opencs.bincodec;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class Base2NCodecTest extends BaseCodecTest {
+	
+	private static final Base64Alphabet ALPHABET = new Base64Alphabet();
+	
+	// Test vectors extracted from RFC4648 and other sources
+	private static final String SAMPLES[][] = {
+		{ "", "", "" },
+		{ "f", "Zg==", "Zg" },
+		{ "fo", "Zm8=", "Zm8" },
+		{ "foo", "Zm9v", "Zm9v" },
+		{ "foob", "Zm9vYg==", "Zm9vYg" },
+		{ "fooba", "Zm9vYmE=", "Zm9vYmE" },
+		{ "foobar", "Zm9vYmFy", "Zm9vYmFy"},
+		{ "This is just a test...", "VGhpcyBpcyBqdXN0IGEgdGVzdC4uLgo=", "VGhpcyBpcyBqdXN0IGEgdGVzdC4uLgo"}
+	};
+	
+	@Test
+	public void testBase2NCodecAlphabet() {
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET);
+		assertFalse(c.usesPadding());
+	}
+
+	@Test
+	public void testBase2NCodecAlphabetIntInt() {
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET, '=', 4);
+		assertTrue(c.usesPadding());
+	}
+
+	@Test
+	public void testBase2NCodecAlphabetIntIntCharArray() {
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET, '=', 4);
+		assertTrue(c.usesPadding());
+	}	
+
+	@Test
+	public void testGetDecodedSize() {
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET);
+		for (int encSize = 0; encSize < 1024; encSize++) {
+			int expectedSize = (encSize * 6) / 8;
+			assertEquals(expectedSize, c.getDecodedSize(encSize));
+		}
+		
+		c = new Base2NCodec(ALPHABET, '=', 4);
+		for (int encSize = 0; encSize < 1024; encSize++) {
+			int expectedSize = (encSize * 6) / 8;
+			assertEquals(expectedSize, c.getDecodedSize(encSize));
+		}
+		
+		c = new Base2NCodec(ALPHABET, '=', 4, Base2NCodec.IGNORE_SPACES);
+		for (int encSize = 0; encSize < 1024; encSize++) {
+			int expectedSize = (encSize * 6) / 8;
+			assertEquals(expectedSize, c.getDecodedSize(encSize));
+		}
+	}
+
+	@Test
+	public void testGetEncodedSize() {
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET);
+		for (int decSize = 0; decSize < 1024; decSize++) {
+			int expectedSize = ((decSize * 8) + 5) / 6;
+			assertEquals(expectedSize, c.getEncodedSize(decSize));
+		}
+		
+		c = new Base2NCodec(ALPHABET, '=', 4);
+		for (int decSize = 0; decSize < 1024; decSize++) {
+			int expectedSize = ((decSize * 8) + 5) / 6;
+			expectedSize = expectedSize + ((4 - expectedSize % 4) % 4);
+			assertEquals(expectedSize, c.getEncodedSize(decSize));
+		}
+		
+		c = new Base2NCodec(ALPHABET, '=', 4, Base2NCodec.IGNORE_SPACES);
+		for (int decSize = 0; decSize < 1024; decSize++) {
+			int expectedSize = ((decSize * 8) + 5) / 6;
+			expectedSize = expectedSize + ((4 - expectedSize % 4) % 4);
+			assertEquals(expectedSize, c.getEncodedSize(decSize));
+		}
+	}
+
+	@Test
+	public void testDecodeCharSequenceIntIntByteArrayInt() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testEncodeByteArrayIntIntAppendable() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetPaddingSize() {
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET);
+		for (int encSize = 0; encSize < 1024; encSize++) {
+			assertEquals(0, c.getPaddingSize(encSize));
+		}
+		
+		c = new Base2NCodec(ALPHABET, '=', 4);
+		for (int encSize = 0; encSize < 1024; encSize++) {
+			int paddingSize = (4 - (encSize % 4)) % 4;
+			assertEquals(paddingSize, c.getPaddingSize(encSize));
+		}
+		
+		c = new Base2NCodec(ALPHABET, '=', 4, Base2NCodec.IGNORE_SPACES);
+		for (int encSize = 0; encSize < 1024; encSize++) {
+			int paddingSize = (4 - (encSize % 4)) % 4;
+			assertEquals(paddingSize, c.getPaddingSize(encSize));
+		}
+	}
+
+	@Test
+	public void testUsesPadding() {
+		Base2NCodec c;
+
+		c = new Base2NCodec(ALPHABET);
+		assertFalse(c.usesPadding());
+
+		c = new Base2NCodec(ALPHABET, '=', 4);
+		assertTrue(c.usesPadding());
+		
+		c = new Base2NCodec(ALPHABET, '=', 4, Base2NCodec.IGNORE_SPACES);
+		assertTrue(c.usesPadding());		
+	}
+
+	@Test
+	public void testIsPadding() {
+		Base2NCodec c;
+
+		c = new Base2NCodec(ALPHABET);
+		for (int ch = 0; ch < 256; ch++) {
+			assertFalse(c.isPadding(ch));
+		}
+
+		c = new Base2NCodec(ALPHABET, '=', 4);
+		for (int ch = 0; ch < 256; ch++) {
+			if (ch != '=') {
+				assertFalse(c.isPadding(ch));
+			} else {
+				assertTrue(c.isPadding(ch));
+			}
+		}
+		
+		c = new Base2NCodec(ALPHABET, '=', 4, Base2NCodec.IGNORE_SPACES);
+		for (int ch = 0; ch < 256; ch++) {
+			if (ch != '=') {
+				assertFalse(c.isPadding(ch));
+			} else {
+				assertTrue(c.isPadding(ch));
+			}
+		}
+	}
+
+	@Test
+	public void testIsIgnored() {
+		Base2NCodec c;
+
+		c = new Base2NCodec(ALPHABET);
+		for (int ch = 0; ch < 256; ch++) {
+			assertFalse(c.isPadding(ch));
+		}
+
+		c = new Base2NCodec(ALPHABET, '=', 4);
+		for (int ch = 0; ch < 256; ch++) {
+			if (ch != '=') {
+				assertFalse(c.isPadding(ch));
+			} else {
+				assertTrue(c.isPadding(ch));
+			}
+		}
+		
+		c = new Base2NCodec(ALPHABET, '=', 4, Base2NCodec.IGNORE_SPACES);
+		for (int ch = 0; ch < 256; ch++) {
+			if (ch != '=') {
+				assertFalse(c.isPadding(ch));
+			} else {
+				assertTrue(c.isPadding(ch));
+			}
+		}
+	}
+}
