@@ -37,7 +37,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-public class AbstractCodecTest extends BaseCodecTest {
+public class AbstractCodecTest {
 	
 	static public class TestCodec extends AbstractCodec {
 
