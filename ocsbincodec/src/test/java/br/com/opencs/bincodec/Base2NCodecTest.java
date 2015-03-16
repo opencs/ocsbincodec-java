@@ -35,8 +35,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Random;
 
-import javax.sound.sampled.AudioFormat.Encoding;
-
 import org.junit.Test;
 
 public class Base2NCodecTest extends BaseCodecTest {
