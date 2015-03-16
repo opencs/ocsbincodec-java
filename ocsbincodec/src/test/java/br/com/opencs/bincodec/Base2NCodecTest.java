@@ -31,9 +31,17 @@ package br.com.opencs.bincodec;
 
 import static org.junit.Assert.*;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.util.Random;
+
+import javax.sound.sampled.AudioFormat.Encoding;
+
 import org.junit.Test;
 
 public class Base2NCodecTest extends BaseCodecTest {
+	
+	private static final Charset CHARSET = Charset.forName("utf-8");
 	
 	private static final Base64Alphabet ALPHABET = new Base64Alphabet();
 	
@@ -46,7 +54,7 @@ public class Base2NCodecTest extends BaseCodecTest {
 		{ "foob", "Zm9vYg==", "Zm9vYg" },
 		{ "fooba", "Zm9vYmE=", "Zm9vYmE" },
 		{ "foobar", "Zm9vYmFy", "Zm9vYmFy"},
-		{ "This is just a test...", "VGhpcyBpcyBqdXN0IGEgdGVzdC4uLgo=", "VGhpcyBpcyBqdXN0IGEgdGVzdC4uLgo"}
+		{ "This is just a test...\n", "VGhpcyBpcyBqdXN0IGEgdGVzdC4uLgo=", "VGhpcyBpcyBqdXN0IGEgdGVzdC4uLgo"}
 	};
 	
 	@Test
@@ -120,16 +128,198 @@ public class Base2NCodecTest extends BaseCodecTest {
 			assertEquals(expectedSize, c.getEncodedSize(decSize));
 		}
 	}
+	
+	protected byte[] toBytes(String s, int startOffs, int addtionalSize) {
+		ByteBuffer b;
+		byte ret[];
+		
+		b = CHARSET.encode(s);
+		ret = new byte[b.remaining() + addtionalSize];
+		b.get(ret, startOffs, b.remaining());
+		
+		return ret;
+	}
+	
+	private void testDecodeCharSequenceIntIntByteArrayIntCore(Base2NCodec c, int encIndex) {
 
-	@Test
-	public void testDecodeCharSequenceIntIntByteArrayInt() {
-		fail("Not yet implemented");
+		// Plain - no offset
+		for (String s[]: SAMPLES) {
+			int expectedSize = s[0].length();
+			byte expected[] = toBytes(s[0], 0, 0);
+			String enc = s[encIndex];
+			byte dst[] = new byte[expected.length];
+			
+			int size = c.decode(enc, 0, enc.length(), dst, 0);
+			assertEquals(enc, expectedSize, size);
+			assertArrayEquals(expected, dst);
+		}
+	
+		// Offset on output
+		for (String s[]: SAMPLES) {
+			int expectedSize = s[0].length();
+			byte expected[] = toBytes(s[0], 1, 2);
+			String enc = s[encIndex];
+			byte dst[] = new byte[expected.length];
+			
+			int size = c.decode(enc, 0, enc.length(), dst, 1);
+			assertEquals(enc, expectedSize, size);
+			assertArrayEquals(expected, dst);
+		}		
+		
+		// Plain - offset on input
+		for (String s[]: SAMPLES) {
+			int expectedSize = s[0].length();
+			byte expected[] = toBytes(s[0], 0, 0);
+			String enc = s[encIndex];
+			byte dst[] = new byte[expected.length];
+			
+			int size = c.decode(" " + enc + " ", 1, enc.length(), dst, 0);
+			assertEquals(enc, expectedSize, size);
+			assertArrayEquals(expected, dst);
+		}
+	
+		// Offset on input and output
+		for (String s[]: SAMPLES) {
+			int expectedSize = s[0].length();
+			byte expected[] = toBytes(s[0], 1, 2);
+			String enc = s[encIndex];
+			byte dst[] = new byte[expected.length];
+			
+			int size = c.decode(" " + enc + " ", 1, enc.length(), dst, 1);
+			assertEquals(enc, expectedSize, size);
+			assertArrayEquals(expected, dst);
+		}		
+	}	
+	
+	private void testDecodeWithIgnoreCore(Base2NCodec c, char ignoreList[]) {
+		Random random = new Random();
+		
+		// Plain - no offset
+		for (int srcSize = 1; srcSize <= 1024; srcSize++) {
+			byte src[];
+			
+			// Generate src
+			src = new byte[srcSize];
+			random.nextBytes(src);
+			
+			// Encode and add ignores
+			StringBuilder enc = new StringBuilder(c.encode(src));
+			for (int i = 0; i < ignoreList.length; i++) {
+				int offs = random.nextInt(enc.length());
+				enc.insert(offs, ignoreList[i]);
+			}
+			
+			byte dst[] = c.decode(enc);
+			assertArrayEquals(src, dst);
+		}	
 	}
 
 	@Test
-	public void testEncodeByteArrayIntIntAppendable() {
-		fail("Not yet implemented");
+	public void testDecodeCharSequenceIntIntByteArrayIntNoPadding() {
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET);
+		testDecodeCharSequenceIntIntByteArrayIntCore(c, 2);
 	}
+
+	@Test
+	public void testDecodeCharSequenceIntIntByteArrayIntPadding() {
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET, '=', 4);
+		testDecodeCharSequenceIntIntByteArrayIntCore(c, 1);		
+	}
+	
+	
+	@Test
+	public void testDecodeWithIgnoreNoPadding() {
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET, '=', 0, Base2NCodec.IGNORE_SPACES);
+		testDecodeWithIgnoreCore(c, Base2NCodec.IGNORE_SPACES);
+	}
+	
+	@Test
+	public void testDecodeWithIgnorePadding() {
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET, '=', 4, Base2NCodec.IGNORE_SPACES);
+		testDecodeWithIgnoreCore(c, Base2NCodec.IGNORE_SPACES);
+	}	
+	
+	private void testEncodeByteArrayIntIntAppendableCore(Base2NCodec c, int encIndex) throws Exception {
+		c = new Base2NCodec(ALPHABET);
+		
+		// Plain - no offset
+		for (String s[]: SAMPLES) {
+			int expectedSize = s[encIndex].length();
+			String expected = s[encIndex];
+			byte src[] = toBytes(s[0], 0, 0);
+			int srcSize = s[0].length();
+			int srcOffs = 0;
+			
+			StringBuilder sb = new StringBuilder();
+			int size = c.encode(src, srcOffs, srcSize, sb);
+			assertEquals(expected, expectedSize, size);
+			assertEquals(expected, sb.toString());
+		}
+		
+		// Plain - offset on src
+		for (String s[]: SAMPLES) {
+			int expectedSize = s[encIndex].length();
+			String expected = s[encIndex];
+			byte src[] = toBytes(s[0], 1, 2);
+			int srcSize = s[0].length();
+			int srcOffs = 1;
+			
+			StringBuilder sb = new StringBuilder();
+			int size = c.encode(src, srcOffs, srcSize, sb);
+			assertEquals(expected, expectedSize, size);
+			assertEquals(expected, sb.toString());
+		}		
+	}
+	
+	
+	@Test
+	public void testEncodeByteArrayIntIntAppendableNoPadding() throws Exception {
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET);
+		testEncodeByteArrayIntIntAppendableCore(c, 2);
+	}
+	
+	@Test
+	public void testEncodeByteArrayIntIntAppendablePadding() throws Exception {
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET, '=', 4);
+		testEncodeByteArrayIntIntAppendableCore(c, 2);
+	}
+	
+	@Test
+	public void testEncodeDecodeNoPadding(){
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET);
+		testEncodeDecodeCore(c);
+	}
+	
+	@Test
+	public void testEncodeDecodePadding(){
+		Base2NCodec c;
+		
+		c = new Base2NCodec(ALPHABET, '=', 4);
+		testEncodeDecodeCore(c);
+	}	
+	
+	@Test
+	public void testEncodeDecodePadding2(){
+		Base2NCodec c;
+		
+		// Exotic configuration
+		c = new Base2NCodec(ALPHABET, '?', 8);
+		testEncodeDecodeCore(c);
+	}	
 
 	@Test
 	public void testGetPaddingSize() {

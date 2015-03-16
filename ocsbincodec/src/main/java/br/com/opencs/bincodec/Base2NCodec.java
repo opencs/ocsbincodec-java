@@ -258,11 +258,12 @@ public class Base2NCodec extends AbstractCodec {
 		if (usesPadding()) {
 			if (paddingSize > 0) {
 				// Remove the padding
+				stop = (srcOffs == srcEndOffs);
 				while (!stop) {
 					// Get a character from source
 					c = src.charAt(srcOffs);
 					srcOffs++;
-					stop = srcOffs == srcEndOffs;
+					stop = (srcOffs == srcEndOffs);
 					// Verify if it has a valid padding or not
 					if (!isIgnored(c)) {
 						srcTrueSize++;
