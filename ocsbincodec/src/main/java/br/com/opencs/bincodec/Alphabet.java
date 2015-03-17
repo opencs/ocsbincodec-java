@@ -33,7 +33,7 @@ package br.com.opencs.bincodec;
  * This interface must be implemented by all alphabets.
  * 
  * <p>
- * The each implementation of this interface is expected to be immutable.
+ * All implementations of this interface are expected to be immutable.
  * </p>
  * 
  * @author Fabio Jun Takada Chino
