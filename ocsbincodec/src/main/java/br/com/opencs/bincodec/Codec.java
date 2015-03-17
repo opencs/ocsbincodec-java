@@ -46,7 +46,7 @@ public interface Codec {
 	 * This value is always greater or equal to the actual decoded data. 
 	 * 
 	 * @param encSize The encoded size characters.
-	 * @return The expected encoded size.
+	 * @return The expected decoded size.
 	 */
 	public int getDecodedSize(int encSize);
 
@@ -63,7 +63,7 @@ public interface Codec {
 	 * 
 	 * @param src The encoded data.
 	 * @return The decoded value.
-	 * @throws IllegalArgumentException If src contains invalid.
+	 * @throws IllegalArgumentException If src is invalid.
 	 */
 	public byte[] decode(CharSequence src) throws IllegalArgumentException;
 
@@ -74,7 +74,7 @@ public interface Codec {
 	 * @param srcOffs The initial offset in src.
 	 * @param srcSize The number of characters in src.
 	 * @return The decoded value.
-	 * @throws IllegalArgumentException If src contains invalid.
+	 * @throws IllegalArgumentException If src is invalid.
 	 */
 	public byte[] decode(CharSequence src, int srcOffs, int srcSize) throws IllegalArgumentException;
 
@@ -88,7 +88,7 @@ public interface Codec {
 	 * @param dst The output buffer.
 	 * @param dstOffs The initial offset in the output buffer.
 	 * @return The number of byes added to dst.
-	 * @throws IllegalArgumentException If src contains invalid.
+	 * @throws IllegalArgumentException If src is invalid.
 	 * @see getDecodedSize(int)
 	 */
 	public int decode(CharSequence src, int srcOffs, int srcSize, byte dst[], int dstOffs) throws IllegalArgumentException;
