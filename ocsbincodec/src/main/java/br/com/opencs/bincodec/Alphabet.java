@@ -50,7 +50,7 @@ public interface Alphabet {
 	/**
 	 * Returns the character for a given value.
 	 * 
-	 * @param v The value. It must be a value larger then 2.
+	 * @param v The value. It must be a value between 0 and size() - 1.
 	 * @return The character for the given value. 
 	 */
 	public int getCharacter(int v);
