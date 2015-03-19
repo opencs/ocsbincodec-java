@@ -32,16 +32,17 @@ package br.com.opencs.bincodec;
 import java.io.IOException;
 
 /**
- * This class implements a generic base 2^n codec.
+ * This class implements a generic base 2^n codec. It can implement encodings such as
+ * Base16, Base32 and Base64 if the correct parameters are passed to it.
  * 
  * <h3>Alphabet</h3>
  * 
- * <p></p>
+ * <p>This class can use any alphabet which the size is a power of 2 between 2 and 128.</p>
  *
  * <h3>Ignored characters</h3>
  * 
- * <p>This class optionally allows the definition of some characters to be ignored from
- * the input while decoding data. This can be enabled by providing a list of characters
+ * <p>This class optionally allows the definition of a set of characters that will be ignored
+ * during the decoding process. This can be enabled by providing a list of characters
  * as a char array.</p>
  * 
  * <p>Since this list is verified right after the character is extracted from the source,
@@ -51,12 +52,55 @@ import java.io.IOException;
  * <h3>Padding</h3>
  * 
  * <p>This class implements a customized padding scheme. It requires
- * the definition of the size of the padding block and the padding character.
- * </p>
+ * the definition of the size of the padding block and the padding character.</p>
  * 
- * <p>If the padding is not enabled, the codec will add padding characters
- * to align the encoded data to the padding block size. It will also threat
- * the padding character as an invalid character while decoding the data.</p>
+ * <p>If the padding is enabled, the codec will add padding characters
+ * to align the encoded data to the padding block size.</p>
+ * 
+ * <p>When not enabled, no padding character will be added to the end of the encoded
+ * data. Furthermore, since the padding is not enabled, the padding character, even
+ * if set, will be threat as an invalid character during the decoding process.</p>
+ *
+ * <h3>Common parameters</h3>
+ * 
+ * This is a list of some common parameters for common standards:
+ * 
+ * <table>
+ * 	<tr>
+ *   <td>Standard</td>
+ *   <td>Alphabet</td>
+ *   <td>Padding character</td>
+ *   <td>Padding block size</td>
+ *   <td>Ignored list</td>
+ *  </tr>
+ *   <td>Base64 (RFC4648)</td>
+ *   <td>Base64Alphabet (not safe)</td>
+ *   <td>=</td>
+ *   <td>4</td>
+ *   <td>SPACES (optional)</td>
+ *  </tr>
+ *  </tr>
+ *   <td>Base64 with URL and Filename Safe (RFC4648)</td>
+ *   <td>Base64Alphabet (safe)</td>
+ *   <td>=</td>
+ *   <td>4</td>
+ *   <td>SPACES (optional)</td>
+ *  </tr>
+ *  </tr>
+ *   <td>Base32 (RFC4648)</td>
+ *   <td>Base32Alphabet</td>
+ *   <td>=</td>
+ *   <td>8</td>
+ *   <td>SPACES (optional)</td>
+ *  </tr>
+ *  </tr>
+ *   <td>Base16 (RFC4648)</td>
+ *   <td>HexadecimalAlphabet (safe)</td>
+ *   <td>No padding required</td>
+ *   <td>No padding required</td>
+ *   <td>SPACES (optional)</td>
+ *  </tr> 
+ * </table>
  * 
  * @author Fabio Jun Takada Chino
  * @since 2015.03.11
