@@ -183,7 +183,15 @@ public class Base2NCodec extends AbstractCodec {
 		return (this.paddingBLockSize >= 2);
 	}
 	
-	protected boolean isPadding(int c) {
+	/**
+	 * Verifies if a given character is a padding character.
+	 * 
+	 * <p>This method always returns false if the paddding is disabled.</p>
+	 * 
+	 * @param c The character to be tested.
+	 * @return true if c is the padding character of false otherwise.
+	 */
+	public boolean isPadding(int c) {
 		
 		if (usesPadding()) {
 			return (c == this.paddingChar);
@@ -193,12 +201,14 @@ public class Base2NCodec extends AbstractCodec {
 	}
 	
 	/**
-	 * Verifies if c is inside the ignored list.
+	 * Verifies if a given character is a ignored character.
 	 * 
-	 * @param c The character to be verified.
-	 * @return true if c must be ignored or false otherwise.
+	 * <p>This method always returns false if the ignore list is disabled.</p>
+	 * 
+	 * @param c The character to be tested.
+	 * @return true if c is the in the ignored list or false otherwise.
 	 */
-	protected boolean isIgnored(int c) {
+	public boolean isIgnored(int c) {
 		
 		for (int i = 0; i < this.ignored.length; i++) {
 			if (c == this.ignored[i]) {

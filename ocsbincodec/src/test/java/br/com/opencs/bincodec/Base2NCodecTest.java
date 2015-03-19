@@ -389,24 +389,21 @@ public class Base2NCodecTest extends BaseCodecTest {
 
 		c = new Base2NCodec(ALPHABET);
 		for (int ch = 0; ch < 256; ch++) {
-			assertFalse(c.isPadding(ch));
+			assertFalse(c.isIgnored(ch));
 		}
 
 		c = new Base2NCodec(ALPHABET, '=', 4);
 		for (int ch = 0; ch < 256; ch++) {
-			if (ch != '=') {
-				assertFalse(c.isPadding(ch));
-			} else {
-				assertTrue(c.isPadding(ch));
-			}
+			assertFalse(c.isIgnored(ch));
 		}
 		
 		c = new Base2NCodec(ALPHABET, '=', 4, Base2NCodec.IGNORE_SPACES);
+		String ignored = new String(Base2NCodec.IGNORE_SPACES);
 		for (int ch = 0; ch < 256; ch++) {
-			if (ch != '=') {
-				assertFalse(c.isPadding(ch));
+			if (ignored.indexOf(ch) < 0) {
+				assertFalse(c.isIgnored(ch));
 			} else {
-				assertTrue(c.isPadding(ch));
+				assertTrue(c.isIgnored(ch));
 			}
 		}
 	}
