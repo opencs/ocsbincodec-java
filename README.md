@@ -12,6 +12,11 @@ implementations in this library will always favor flexibility first.
 
 ## Version history
 
+* 1.0.1:
+  * Documentation updated
+  * A few fixes in unit-tests
+  * Method br.com.opencs.bincodec.Base2NCodec.isIgnored(int) became public;
+  * Method br.com.opencs.bincodec.Base2NCodec.isPadding(int) became public;
 * 1.0.0:
   * First public version
 
