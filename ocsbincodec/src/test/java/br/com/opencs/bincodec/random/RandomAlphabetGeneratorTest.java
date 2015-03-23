@@ -37,6 +37,9 @@ public class RandomAlphabetGeneratorTest {
 
 	private static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	
+	// Shuffle of CHARS with seed as 12345 and 100 rounds
+	private static final String SHUFFLE_STANDARD = "MBYXGZEJKRSNOLCFQTUDIHAVWP";
+	
 	@Test
 	public void testGenerateRandom() {
 		char src[];
@@ -96,4 +99,24 @@ public class RandomAlphabetGeneratorTest {
 		assertArrayEquals(dst, dst2);
 	}
 
+	
+	@Test
+	public void testShuffleStandard() {
+		int count;
+		char src[];
+		char dst[]; 
+
+		// Initialize the source
+		src = CHARS.toCharArray();
+		
+		// No shuffle at all
+		dst = src.clone();
+		RandomAlphabetGenerator.shuffle(0, 0, dst);
+		assertArrayEquals(src, dst);
+		
+		// For rounds
+		dst = src.clone();
+		RandomAlphabetGenerator.shuffle(12345, 100, dst);
+		assertArrayEquals(SHUFFLE_STANDARD.toCharArray(), dst);
+	}	
 }
