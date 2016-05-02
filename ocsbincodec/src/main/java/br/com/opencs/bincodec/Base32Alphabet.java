@@ -65,7 +65,6 @@ public class Base32Alphabet extends ArrayAlphabet {
 	 * @return The value of the character. 
 	 * @throws IllegalArgumentException If c is not in the alphabet. 
 	 */
-	@Override
 	public int getValue(int c) throws IllegalArgumentException {
 
 		if ((c >= 'a') && (c <= 'z')) {

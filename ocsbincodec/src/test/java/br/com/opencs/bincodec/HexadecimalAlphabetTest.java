@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 2015, Open Communications Security
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * 
+ *
  * * Neither the name of ocsbincodec-java nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -29,68 +29,59 @@
  */
 package br.com.opencs.bincodec;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 public class HexadecimalAlphabetTest extends BaseAlphabetTest {
 
 	private static final String CHARACTERS = "0123456789ABCDEF";
 	private static final char CHARACTERS_ARRAY[] = CHARACTERS.toCharArray();
-	
+
 	private static final String CHARACTERS_LC = "0123456789abcdef";
-	private static final char CHARACTERS_ARRAY_LC[] = CHARACTERS_LC.toCharArray();
-	
-	@Test
-	public void testHexadecimalAlphabet() {
+	private static final char CHARACTERS_LC_ARRAY[] = CHARACTERS_LC.toCharArray();
+
+	public void testGetCharacter() {
 		HexadecimalAlphabet a;
-		
-		a = new HexadecimalAlphabet();
-		assertArrayEquals(CHARACTERS_ARRAY, a.alphabet);
-	}
-	
-	@Test
-	public void testHexadecimalBoolean() {
-		HexadecimalAlphabet a;
-		
-		a = new HexadecimalAlphabet(false);
-		assertArrayEquals(CHARACTERS_ARRAY, a.alphabet);
-		
-		a = new HexadecimalAlphabet(true);
-		assertArrayEquals(CHARACTERS_ARRAY_LC, a.alphabet);		
-	}	
-	
-	@Test
-	public void testSize(){
-		HexadecimalAlphabet a;
-		
-		a = new HexadecimalAlphabet();
-		assertEquals(CHARACTERS.length(), a.size());
 
 		a = new HexadecimalAlphabet(false);
-		assertEquals(CHARACTERS.length(), a.size());
-
+		testGetCharacterCore(a, CHARACTERS);
 		a = new HexadecimalAlphabet(true);
-		assertEquals(CHARACTERS_LC.length(), a.size());
+		testGetCharacterCore(a, CHARACTERS_LC);
 	}
-	
-	@Test
-	public void testGetValue(){
+
+	public void testGetValue() {
 		HexadecimalAlphabet a;
-		
+
 		a = new HexadecimalAlphabet(false);
 		testGetValueCoreCaseInsensitive(a, CHARACTERS);
 		a = new HexadecimalAlphabet(true);
 		testGetValueCoreCaseInsensitive(a, CHARACTERS_LC);
 	}
-	
-	@Test
-	public void testGetCharacter(){
+
+	public void testHexadecimalAlphabet() {
 		HexadecimalAlphabet a;
-		
+
+		a = new HexadecimalAlphabet();
+		Assert.assertArrayEquals(CHARACTERS_ARRAY, a.alphabet);
+	}
+
+	public void testHexadecimalBoolean() {
+		HexadecimalAlphabet a;
+
 		a = new HexadecimalAlphabet(false);
-		testGetCharacterCore(a, CHARACTERS);
+		Assert.assertArrayEquals(CHARACTERS_ARRAY, a.alphabet);
+
 		a = new HexadecimalAlphabet(true);
-		testGetCharacterCore(a, CHARACTERS_LC);
+		Assert.assertArrayEquals(CHARACTERS_LC_ARRAY, a.alphabet);
+	}
+
+	public void testSize() {
+		HexadecimalAlphabet a;
+
+		a = new HexadecimalAlphabet();
+		junit.framework.Assert.assertEquals(CHARACTERS.length(), a.size());
+
+		a = new HexadecimalAlphabet(false);
+		junit.framework.Assert.assertEquals(CHARACTERS.length(), a.size());
+
+		a = new HexadecimalAlphabet(true);
+		junit.framework.Assert.assertEquals(CHARACTERS_LC.length(), a.size());
 	}
 }

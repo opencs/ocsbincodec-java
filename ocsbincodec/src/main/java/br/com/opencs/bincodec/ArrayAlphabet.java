@@ -41,19 +41,17 @@ public class ArrayAlphabet implements Alphabet {
 	protected final char alphabet[];
 
 	public ArrayAlphabet(char alphabet[]) {
-		this.alphabet = alphabet.clone();
+		this.alphabet = (char[]) alphabet.clone();
 	}
 	
 	public ArrayAlphabet(String alphabet) {
 		this.alphabet = alphabet.toCharArray();
 	}
 
-	@Override
 	public int size() {
 		return alphabet.length;
 	}
 
-	@Override
 	public int getCharacter(int v) {
 		return alphabet[v];
 	}
@@ -69,7 +67,6 @@ public class ArrayAlphabet implements Alphabet {
 	 * @return The value of the character. 
 	 * @throws IllegalArgumentException If c is not in the alphabet. 
 	 */
-	@Override
 	public int getValue(int c) throws IllegalArgumentException {
 		int v;
 		
