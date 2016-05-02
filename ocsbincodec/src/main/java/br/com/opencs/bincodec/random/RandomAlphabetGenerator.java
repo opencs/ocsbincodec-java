@@ -63,7 +63,7 @@ public class RandomAlphabetGenerator {
 		}
 		
 		// Ensure that the original candidates will remain as it is
-		candidates = candidates.clone();
+		candidates = (char[]) candidates.clone();
 		
 		// Shuffle the input and select the first ones...
 		shuffle(seed, rounds, candidates);

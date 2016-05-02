@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 2015, Open Communications Security
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * 
+ *
  * * Neither the name of ocsbincodec-java nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -29,41 +29,38 @@
  */
 package br.com.opencs.bincodec.random;
 
-import static org.junit.Assert.*;
-
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StreamCorruptedException;
 
-import org.junit.Test;
+import junit.framework.TestCase;
 
-public class IntegerFileReaderTest {
+public class IntegerFileReaderTest extends TestCase  {
 
-	@Test
-	public void testIntegerFileReader() throws Exception {
-		IntegerFileReader r;
-		InputStream in;
-		
-		in = IntegerFileReaderTest.class.getResourceAsStream("/br/com/opencs/bincodec/random/IntegerFileReaderTest1.txt");
-		assertNotNull(in);
-		r = new IntegerFileReader(in);
-		r.close();
-	}
-
-	@Test
 	public void testClose() throws Exception {
 		IntegerFileReader r;
 		InputStream in;
-		
-		in = IntegerFileReaderTest.class.getResourceAsStream("/br/com/opencs/bincodec/random/IntegerFileReaderTest1.txt");
-		assertNotNull(in);
+
+		in = IntegerFileReaderTest.class
+				.getResourceAsStream("/br/com/opencs/bincodec/random/IntegerFileReaderTest1.txt");
+		junit.framework.Assert.assertNotNull(in);
 		r = new IntegerFileReader(in);
 		r.close();
 		r.close();
 	}
 
-	@Test
+	public void testIntegerFileReader() throws Exception {
+		IntegerFileReader r;
+		InputStream in;
+
+		in = IntegerFileReaderTest.class
+				.getResourceAsStream("/br/com/opencs/bincodec/random/IntegerFileReaderTest1.txt");
+		junit.framework.Assert.assertNotNull(in);
+		r = new IntegerFileReader(in);
+		r.close();
+	}
+
 	public void testNextInt() throws Exception {
 		// 0-9, no newline on last line
 		testNextIntCore("/br/com/opencs/bincodec/random/IntegerFileReaderTest1.txt");
@@ -75,40 +72,41 @@ public class IntegerFileReaderTest {
 		testNextIntCore("/br/com/opencs/bincodec/random/IntegerFileReaderTest4.txt");
 	}
 
-	protected void testNextIntCore(String resourceName) throws IOException, EOFException {
-		IntegerFileReader r;
-		InputStream in;
-		
-		in = IntegerFileReaderTest.class.getResourceAsStream(resourceName);
-		assertNotNull(in);
-		r = new IntegerFileReader(in);
-		for (int i = 0; i < 10; i++) {
-			assertEquals(i, r.nextInt());
-		}
-		try {
-			r.nextInt();
-			fail();
-		} catch (EOFException e) {}
-		r.close();
-	}
-	
-	@Test
 	public void testNextIntBroken() throws Exception {
 		IntegerFileReader r;
 		InputStream in;
-		
-		in = IntegerFileReaderTest.class.getResourceAsStream("/br/com/opencs/bincodec/random/IntegerFileReaderTest5.txt");
-		assertNotNull(in);
+
+		in = IntegerFileReaderTest.class
+				.getResourceAsStream("/br/com/opencs/bincodec/random/IntegerFileReaderTest5.txt");
+		junit.framework.Assert.assertNotNull(in);
 		r = new IntegerFileReader(in);
 		for (int i = 0; i < 7; i++) {
-			assertEquals(i, r.nextInt());
+			junit.framework.Assert.assertEquals(i, r.nextInt());
 		}
 		try {
 			r.nextInt();
-			fail();
-		} catch (StreamCorruptedException e) {
-			assertEquals("Invalid integer on line 10.", e.getMessage());
-			
+			junit.framework.Assert.fail();
+		} catch (final StreamCorruptedException e) {
+			junit.framework.Assert.assertEquals("Invalid integer on line 10.", e.getMessage());
+
+		}
+		r.close();
+	}
+
+	protected void testNextIntCore(String resourceName) throws IOException, EOFException {
+		IntegerFileReader r;
+		InputStream in;
+
+		in = IntegerFileReaderTest.class.getResourceAsStream(resourceName);
+		junit.framework.Assert.assertNotNull(in);
+		r = new IntegerFileReader(in);
+		for (int i = 0; i < 10; i++) {
+			junit.framework.Assert.assertEquals(i, r.nextInt());
+		}
+		try {
+			r.nextInt();
+			junit.framework.Assert.fail();
+		} catch (final EOFException e) {
 		}
 		r.close();
 	}
