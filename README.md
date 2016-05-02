@@ -12,6 +12,8 @@ implementations in this library will always favor flexibility first.
 
 ## Version history
 
+* 1.0.2:
+  * Now compatible with Java 1.4
 * 1.0.1:
   * Documentation updated
   * A few fixes in unit-tests
