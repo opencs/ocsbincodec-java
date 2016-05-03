@@ -67,7 +67,7 @@ public class Obfuscator {
 		char alphabet[] = RandomAlphabetGenerator.generateRandom(seed, rounds, RandomAlphabetGenerator.QRCODE_ALPHANUMERIC_NO_SPACE, 32);
 		Base2NCodec encoder = new Base2NCodec(new ArrayAlphabet(alphabet));
 		String encoded = encoder.encode(src);
-		System.out.printf("The obfuscated data is '%1$s'.\n", new Object[] {encoded});
+		System.out.printf("The obfuscated data is '%1$s'.\n", encoded);
 		
 		// Deobfuscation with the same seed and rounds
 		System.out.println("Deobfuscating...");

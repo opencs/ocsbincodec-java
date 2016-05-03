@@ -164,7 +164,7 @@ public class Base2NCodec extends AbstractCodec {
 		this.size = getCharacterSize(alphabet);
 		this.clearMask = (1 << this.size) - 1;
 		if (ignored != null) {
-			this.ignored = (char[]) ignored.clone();
+			this.ignored = ignored.clone();
 		} else {
 			this.ignored = IGNORE_NONE;
 		}

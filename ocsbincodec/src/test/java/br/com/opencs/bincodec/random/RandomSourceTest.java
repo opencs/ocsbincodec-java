@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 2015, Open Communications Security
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- *
+ * 
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- *
+ * 
  * * Neither the name of ocsbincodec-java nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -29,52 +29,59 @@
  */
 package br.com.opencs.bincodec.random;
 
+import static org.junit.Assert.*;
+
 import java.util.Random;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class RandomSourceTest extends TestCase  {
+public class RandomSourceTest {
 
+	@Test
+	public void testRandomSource() {
+		RandomSource r;
+		
+		r = new RandomSource(0);
+		assertNotNull(r);
+	}
+
+	@Test
 	public void testNext() throws Exception {
 		testNextCore("/br/com/opencs/bincodec/random/RandomSequence1.txt");
 		testNextCore("/br/com/opencs/bincodec/random/RandomSequence2.txt");
 		testNextCore("/br/com/opencs/bincodec/random/RandomSequence3.txt");
 	}
-
+	
 	public void testNextCore(String resourceName) throws Exception {
 		RandomSource r;
 		IntegerFileReader expected;
-
+		
 		expected = new IntegerFileReader(RandomSourceTest.class.getResourceAsStream(resourceName));
 		try {
 			r = new RandomSource(expected.nextInt());
 			for (int i = 0; i < 1000; i++) {
-				junit.framework.Assert.assertEquals(expected.nextInt(), r.next());
+				assertEquals(expected.nextInt(), r.next());
 			}
-
+			
 		} finally {
 			expected.close();
 		}
-	}
-
-	public void testRandomSource() {
-		RandomSource r;
-
-		r = new RandomSource(0);
-		junit.framework.Assert.assertNotNull(r);
-	}
-
+	}	
+	
+	@Test
 	public void testSync() {
-		final Random random = new Random();
-
+		Random random = new Random();
+		
 		for (int i = 0; i < 1000; i++) {
-			final int seed = Math.abs(random.nextInt());
-			final RandomSource r1 = new RandomSource(seed);
-			final RandomSource r2 = new RandomSource(seed);
+			int seed = Math.abs(random.nextInt());
+			RandomSource r1 = new RandomSource(seed);
+			RandomSource r2 = new RandomSource(seed);
 			for (int j = 0; j < 1000; j++) {
-				junit.framework.Assert.assertEquals(r1.next(), r2.next());
+				assertEquals(r1.next(), r2.next());
 			}
 		}
 	}
+	
+	
 
 }

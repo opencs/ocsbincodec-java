@@ -80,10 +80,12 @@ public class BinaryAlphabet implements Alphabet {
 		return one;
 	}
 
+	@Override
 	public int size() {
 		return 2;
 	}
 
+	@Override
 	public int getCharacter(int v) {
 
 		if (v == 0) {
@@ -93,6 +95,7 @@ public class BinaryAlphabet implements Alphabet {
 		}
 	}
 
+	@Override
 	public int getValue(int c) throws IllegalArgumentException {
 		
 		if (c == zero) {

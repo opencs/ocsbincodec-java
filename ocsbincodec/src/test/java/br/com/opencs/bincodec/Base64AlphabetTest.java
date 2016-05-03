@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 2015, Open Communications Security
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- *
+ * 
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- *
+ * 
  * * Neither the name of ocsbincodec-java nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -29,64 +29,73 @@
  */
 package br.com.opencs.bincodec;
 
-public class Base64AlphabetTest extends BaseAlphabetTest {
+import static org.junit.Assert.*;
 
+import org.junit.Test;
+
+public class Base64AlphabetTest extends BaseAlphabetTest {
+	
 	private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 	private static final String ALPHABET_SAFE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
+	@Test
 	public void testBase64Alphabet() {
 		Base64Alphabet a;
-
+		
 		a = new Base64Alphabet();
-		Assert.assertArrayEquals(ALPHABET.toCharArray(), a.alphabet);
+		assertArrayEquals(ALPHABET.toCharArray(), a.alphabet);
 	}
 
+	@Test
 	public void testBase64AlphabetBoolean() {
 		Base64Alphabet a;
-
+		
 		a = new Base64Alphabet(false);
-		Assert.assertArrayEquals(ALPHABET.toCharArray(), a.alphabet);
+		assertArrayEquals(ALPHABET.toCharArray(), a.alphabet);
 
 		a = new Base64Alphabet(true);
-		Assert.assertArrayEquals(ALPHABET_SAFE.toCharArray(), a.alphabet);
+		assertArrayEquals(ALPHABET_SAFE.toCharArray(), a.alphabet);
 	}
-
-	public void testGetCharacter() {
-		Base64Alphabet a;
-
-		a = new Base64Alphabet();
-		testGetCharacterCore(a, ALPHABET);
-
-		a = new Base64Alphabet(false);
-		testGetCharacterCore(a, ALPHABET);
-
-		a = new Base64Alphabet(true);
-		testGetCharacterCore(a, ALPHABET_SAFE);
-	}
-
-	public void testGetValue() {
-		Base64Alphabet a;
-
-		a = new Base64Alphabet();
-		testGetValueCore(a, ALPHABET);
-
-		a = new Base64Alphabet(false);
-		testGetValueCore(a, ALPHABET);
-
-		a = new Base64Alphabet(true);
-		testGetValueCore(a, ALPHABET_SAFE);
-	}
-
+	
+	@Test
 	public void testSize() {
 		Base64Alphabet a;
-
+		
 		a = new Base64Alphabet();
-		junit.framework.Assert.assertEquals(64, a.size());
-
+		assertEquals(64, a.size());
+		
 		a = new Base64Alphabet(false);
-		junit.framework.Assert.assertEquals(64, a.size());
+		assertEquals(64, a.size());
 
 		a = new Base64Alphabet(true);
-		junit.framework.Assert.assertEquals(64, a.size());
+		assertEquals(64, a.size());
+	}
+	
+	@Test
+	public void testGetCharacter() {
+		Base64Alphabet a;
+		
+		a = new Base64Alphabet();
+		testGetCharacterCore(a, ALPHABET);
+		
+		a = new Base64Alphabet(false);
+		testGetCharacterCore(a, ALPHABET);
+
+		a = new Base64Alphabet(true);
+		testGetCharacterCore(a, ALPHABET_SAFE);	
+	}
+	
+	@Test
+	public void testGetValue() {
+		Base64Alphabet a;
+		
+		a = new Base64Alphabet();
+		testGetValueCore(a, ALPHABET);
+		
+		a = new Base64Alphabet(false);
+		testGetValueCore(a, ALPHABET);
+
+		a = new Base64Alphabet(true);
+		testGetValueCore(a, ALPHABET_SAFE);		
 	}
 }
