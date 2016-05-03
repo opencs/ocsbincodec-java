@@ -41,7 +41,7 @@ public class ArrayAlphabet implements Alphabet {
 	protected final char alphabet[];
 
 	public ArrayAlphabet(char alphabet[]) {
-		this.alphabet = (char[]) alphabet.clone();
+		this.alphabet = (char[])alphabet.clone();
 	}
 	
 	public ArrayAlphabet(String alphabet) {

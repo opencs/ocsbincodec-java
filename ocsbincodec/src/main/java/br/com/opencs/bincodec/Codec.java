@@ -121,5 +121,5 @@ public interface Codec {
 	 * @return The number of characters added to dst.
 	 * @throws IOException
 	 */
-	public int encode(byte src[], int srcOffs, int srcSize, Appendable dst) throws IOException;
+	public int encode(byte src[], int srcOffs, int srcSize, StringBuffer dst) throws IOException;
 }

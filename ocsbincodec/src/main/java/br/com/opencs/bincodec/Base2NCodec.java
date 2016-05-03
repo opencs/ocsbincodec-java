@@ -164,7 +164,7 @@ public class Base2NCodec extends AbstractCodec {
 		this.size = getCharacterSize(alphabet);
 		this.clearMask = (1 << this.size) - 1;
 		if (ignored != null) {
-			this.ignored = (char[]) ignored.clone();
+			this.ignored = (char[])ignored.clone();
 		} else {
 			this.ignored = IGNORE_NONE;
 		}
@@ -335,7 +335,7 @@ public class Base2NCodec extends AbstractCodec {
 		return  dstOffs - oldDstOffs;
 	}
 	
-	public int encode(byte src[], int srcOffs, int srcSize, Appendable dst) throws IOException {
+	public int encode(byte src[], int srcOffs, int srcSize, StringBuffer dst) throws IOException {
 		int bitBuffer;
 		int bitBufferSize;
 		int srcEndOffs;

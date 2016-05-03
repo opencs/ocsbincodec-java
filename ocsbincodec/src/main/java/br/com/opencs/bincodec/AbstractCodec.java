@@ -61,7 +61,9 @@ public abstract class AbstractCodec implements Codec {
 		if (decSize == ret.length) {
 			return ret;
 		} else {
-			return Arrays.copyOf(ret, decSize);
+			byte truncated[] = new byte[decSize];
+			System.arraycopy(ret, 0, truncated, 0, decSize);
+			return truncated;
 		}
 	}
 
@@ -75,7 +77,7 @@ public abstract class AbstractCodec implements Codec {
 	public String encode(byte src[], int srcOffs, int srcSize) {
 		
 		try {
-			StringBuilder sb = new StringBuilder(getEncodedSize(srcSize));
+			StringBuffer sb = new StringBuffer(getEncodedSize(srcSize));
 			encode(src, srcOffs, srcSize, sb);
 			return sb.toString();
 		} catch (IOException e) {
@@ -83,6 +85,6 @@ public abstract class AbstractCodec implements Codec {
 		}
 	}
 
-	public abstract int encode(byte[] src, int srcOffs, int srcSize, Appendable dst)
+	public abstract int encode(byte[] src, int srcOffs, int srcSize, StringBuffer dst)
 			throws IOException;
 }
