@@ -31,6 +31,9 @@ implementations in this library will always favor flexibility first.
 * Uniform interface for all encoders/decoders
 * Compatible with Java 1.6 and higher (including Android API)
 
+For compatibility with Java 1.4, look for the branch java-1.4 of this project's
+repository.
+
 ## Licensing
 
 This software is released under the *Modified BSD License*.
