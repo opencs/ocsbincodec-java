@@ -1,5 +1,5 @@
-# OpenCS Binary-to-Text library for Java
-Copyright (c) 2015 Open Communications Security. All rights reserved.
+# OpenCS Binary-to-Text library for Java 1.4
+Copyright (c) 2015-2016 Open Communications Security. All rights reserved.
 
 ## Introduction
 
@@ -10,17 +10,23 @@ standard and non-standard encodings schemes.
 This library was designed to be as flexible as possible. This means that the
 implementations in this library will always favor flexibility first.
 
+This version is a backport of the original OpenCS Binary-to-Text library for 
+Java that targets Java 1.4. Because of that, the binary interface of this
+version was modified in order to handle the lack of classes only available
+on Java 5 and later.
+
+It is important to notice that users of this version can easly start to use the
+original version but users of the new version cannot start to use this version
+of the library without proper adjustments.
+
+Although this version is fully compatible with Java 5 and later, it is 
+recommended to use the non Java 1.4 for better performance and compatibility
+with the new frameworks introduced in Java 1.5.
+
 ## Version history
 
 * 1.0.2:
-  * Now compatible with Java 1.4
-* 1.0.1:
-  * Documentation updated
-  * A few fixes in unit-tests
-  * Method br.com.opencs.bincodec.Base2NCodec.isIgnored(int) became public;
-  * Method br.com.opencs.bincodec.Base2NCodec.isPadding(int) became public;
-* 1.0.0:
-  * First public version
+  * Backport of the original source version 1.0.1 to Java 1.4;
 
 ## Features
 
@@ -31,7 +37,7 @@ implementations in this library will always favor flexibility first.
   * Base64 (RFC4648, customizable)
 * Custom alphabets
 * Uniform interface for all encoders/decoders
-* Compatible with Java 1.6 and higher (including Android API)
+* Compatible with Java 1.4 and higher
 
 ## Licensing
 
