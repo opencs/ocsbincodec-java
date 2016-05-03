@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 2015, Open Communications Security
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- *
+ * 
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- *
+ * 
  * * Neither the name of ocsbincodec-java nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -29,47 +29,46 @@
  */
 package br.com.opencs.bincodec;
 
-import junit.framework.TestCase;
+import br.com.opencs.junit.TestCaseEx;
 
-public class BinaryAlphabetTest extends TestCase {
+public class BinaryAlphabetTest extends TestCaseEx {
 
 	public void testBinaryAlphabet() {
 		BinaryAlphabet a;
-
+		
 		a = new BinaryAlphabet();
 		testBinaryAlphabetCore(a, '0', '1');
 	}
-
+	
 	public void testBinaryAlphabetCharChar() {
 		BinaryAlphabet a;
-
+		
 		a = new BinaryAlphabet('a', 'b');
 		testBinaryAlphabetCore(a, 'a', 'b');
-	}
-
+	}	
+	
 	protected void testBinaryAlphabetCore(BinaryAlphabet a, int zero, int one) {
 
-		junit.framework.Assert.assertEquals(2, a.size());
-		junit.framework.Assert.assertEquals(zero, a.getZero());
-		junit.framework.Assert.assertEquals(one, a.getOne());
+		assertEquals(2, a.size());
+		assertEquals(zero, a.getZero());
+		assertEquals(one, a.getOne());
+		
+		assertEquals(zero, a.getCharacter(0));
+		assertEquals(one, a.getCharacter(1));
 
-		junit.framework.Assert.assertEquals(zero, a.getCharacter(0));
-		junit.framework.Assert.assertEquals(one, a.getCharacter(1));
-
-		junit.framework.Assert.assertEquals(0, a.getValue(zero));
-		junit.framework.Assert.assertEquals(1, a.getValue(one));
-
+		assertEquals(0, a.getValue(zero));
+		assertEquals(1, a.getValue(one));
+		
 		for (int c = 0; c < 256; c++) {
 			if (c == zero) {
-				junit.framework.Assert.assertEquals(0, a.getValue(c));
+				assertEquals(0, a.getValue(c));
 			} else if (c == one) {
-				junit.framework.Assert.assertEquals(1, a.getValue(c));
+				assertEquals(1, a.getValue(c));
 			} else {
 				try {
 					a.getValue(c);
-					junit.framework.Assert.fail();
-				} catch (final Exception e) {
-				}
+					fail();
+				} catch (Exception e) {}
 			}
 		}
 	}
